@@ -25,7 +25,7 @@ function BooksIndex() {
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 5;
+  const pageSize = 6;
 
   const loadData = (page: number) => {
     axios
@@ -78,16 +78,14 @@ function BooksIndex() {
               <td>{book.id}</td>
               <td>{book.title}</td>
               <td>
-                {book.authors.length > 0 ? (
-                  book.authors.map((author, index) => (
-                    <span key={index}>
-                      {author.name}
-                      <br />
-                    </span>
-                  ))
-                ) : (
-                  "No authors"
-                )}
+                {book.authors.length > 0
+                  ? book.authors.map((author, index) => (
+                      <span key={index}>
+                        {author.name}
+                        <br />
+                      </span>
+                    ))
+                  : "No authors"}
               </td>
               <td>
                 <Link
@@ -106,7 +104,7 @@ function BooksIndex() {
       </table>
 
       {/* Pagination controls */}
-      <div className="d-flex justify-content-between align-items-center mt-3">
+      {/* <div className="d-flex justify-content-between align-items-center mt-3">
         <button
           className="btn btn-secondary"
           disabled={currentPage === 1}
@@ -135,6 +133,44 @@ function BooksIndex() {
           onClick={() => goToPage(currentPage + 1)}
         >
           Next
+        </button>
+      </div> */}
+
+      <div className="d-flex justify-content-center align-items-center mt-3 gap-2">
+        <button
+          className="btn btn-secondary"
+          disabled={currentPage === 1}
+          onClick={() => goToPage(1)}
+        >
+          First
+        </button>
+
+        <button
+          className="btn btn-secondary"
+          disabled={currentPage === 1}
+          onClick={() => goToPage(currentPage - 1)}
+        >
+          Previous
+        </button>
+
+        <span className="mx-2">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          className="btn btn-secondary"
+          disabled={currentPage === totalPages}
+          onClick={() => goToPage(currentPage + 1)}
+        >
+          Next
+        </button>
+
+        <button
+          className="btn btn-secondary"
+          disabled={currentPage === totalPages}
+          onClick={() => goToPage(totalPages)}
+        >
+          Last
         </button>
       </div>
     </div>
