@@ -16,7 +16,12 @@ type Author = {
 };
 
 export default function BookForm() {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<FormData>();
   const [authors, setAuthors] = useState<Author[]>([]);
   const navigate = useNavigate();
 
@@ -58,17 +63,34 @@ export default function BookForm() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 rounded-2xl shadow-lg bg-white">
       <h2 className="text-xl font-bold mb-4">Add a Book</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 
+      <form
+        onSubmit={
+          handleSubmit(
+            onSubmit,
+            (errors) => {
+              // Trigger a toast for each error
+              Object.values(errors).forEach((err) => {
+                toast.error(err.message);
+              }
+              );
+            })}
+        className="flex flex-col gap-4"
+      >
         {/* Book Title */}
-        <div>
+        < div >
           <input
-            {...register("title", { required: "Title is required" })}
+            {...register("title", { 
+              required: "Name is required",
+              validate: value => value.trim() !== "" || "Name is required"
+            })}
             type="text"
             placeholder="Book Title"
             className="form-control p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
+          {errors.title && (
+            <span className="fw-bold text-danger text-sm">{errors.title.message}</span>
+          )}
         </div>
 
         {/* Authors Selection */}
@@ -91,9 +113,9 @@ export default function BookForm() {
           <button type="submit" className="btn btn-primary">Save</button>
           <button type="button" className="btn btn-secondary" onClick={cancel}>Cancel</button>
         </div>
-      </form>
+      </form >
 
       <ToastContainer position="top-right" autoClose={2000} />
-    </div>
+    </div >
   );
 }

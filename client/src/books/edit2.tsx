@@ -38,6 +38,7 @@ export default function EditBookForm2() {
       title: "",
       authorIds: [],
     },
+    mode: "onSubmit"
   });
 
   // Fetch all authors
@@ -81,7 +82,20 @@ export default function EditBookForm2() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 rounded-2xl shadow-lg bg-white">
       <h2 className="text-xl font-bold mb-4">Edit Book {id}</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+
+      <form onSubmit={
+        handleSubmit(
+          onSubmit,
+          (errors) => {
+            // Trigger a toast for each error
+            Object.values(errors).forEach((err) => {
+              if (err?.message) {
+                toast.error(err.message);
+              }
+            });
+          }
+        )} 
+        className="flex flex-col gap-4">
         {/* Book Title */}
         <div>
           <input
@@ -91,7 +105,7 @@ export default function EditBookForm2() {
             className="form-control p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.title && (
-            <span className="text-red-500 text-sm">{errors.title.message}</span>
+            <span className="fw-bold text-danger text-sm">{errors.title.message}</span>
           )}
         </div>
 
