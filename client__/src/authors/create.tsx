@@ -89,7 +89,7 @@ export default function AuthorForm() {
             className="form-control p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.name && (
-            <span className="fw-bold text-danger text-sm">{errors.name.message}</span>
+            <span className="text-red-500 text-sm">{errors.name.message}</span>
           )}
         </div>
 
@@ -121,6 +121,7 @@ export default function AuthorForm() {
           </button>
         </div>
       </form>
+
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
